@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -13,24 +14,45 @@ import java.util.UUID;
 @Table(name = "stores")
 public class Store {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "store_name", nullable = false)
-    private String storeName;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @Column(name = "store_address", nullable = false)
-    private String storeAddress;
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive;
 
     @CreatedDate
-    @Column(name = "created_date", updatable = false, nullable = false)
-    private LocalDateTime createdDate;
+    @Column(name = "created_at", updatable = false, nullable = false)
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name = "updated_date", nullable = false)
-    private LocalDateTime updatedDate;
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Branch> branches;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Customer> customers;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Supplier> suppliers;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductCategory> productCategories;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products;
 }

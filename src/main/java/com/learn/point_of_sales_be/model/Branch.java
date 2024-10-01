@@ -17,17 +17,17 @@ public class Branch {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Employee> employees;
+    @Column(name = "code")
+    private String code;
 
-    @Column(name = "branch_code")
-    private String branchCode;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @Column(name = "branch_name", nullable = false)
-    private String branchName;
+    @Column(name = "address", nullable = false)
+    private String address;
 
-    @Column(name = "branch_address", nullable = false)
-    private String branchAddress;
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive;
 
     @CreatedDate
     @Column(name = "created_date", nullable = false, updatable = false)
@@ -36,4 +36,24 @@ public class Branch {
     @LastModifiedDate
     @Column(name = "updated_date", nullable = false)
     private LocalDateTime updatedDate;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BranchEmployee> branchEmployees;
+
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Shift> shifts;
+
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Procurement> procurements;
+
+    @ManyToOne
+    @JoinColumn(name = "store_id", nullable = false)
+    private Store store;
+
+    @ManyToOne
+    @JoinColumn(name = "village_id", nullable = false)
+    private Village village;
 }

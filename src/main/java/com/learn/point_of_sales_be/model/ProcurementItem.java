@@ -7,17 +7,19 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "product_variant_option")
-public class ProductVariantOption {
+@Table(name = "procurement_items")
+public class ProcurementItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    private Integer qty;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "variant_option_id", nullable = false)
-    private VariantOption variantOption;
+    @JoinColumn(name = "procurement_id", nullable = false)
+    private Procurement procurement;
 }

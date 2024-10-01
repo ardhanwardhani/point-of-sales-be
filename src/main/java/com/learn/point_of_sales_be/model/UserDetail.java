@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "user_detail")
+@Table(name = "user_details")
 public class UserDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,11 +20,17 @@ public class UserDetail {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "full_name", nullable = false)
-    private String fullName;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
 
     @Column(name = "phone", nullable = false)
     private String phone;
+
+    @Column(name = "nik")
+    private String nik;
 
     @Column(name = "is_premium")
     private Boolean isPremium;
@@ -32,11 +38,20 @@ public class UserDetail {
     @Column(name = "image_url")
     private String imageUrl;
 
+    private String address;
+
+    @ManyToOne
+    @JoinColumn(name = "village_id", nullable = false)
+    private Village village;
+
     @CreatedDate
-    @Column(name = "created_date", updatable = false, nullable = false)
-    private LocalDateTime createdDate;
+    @Column(name = "created_at", updatable = false, nullable = false)
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name = "updated_date", nullable = false)
-    private LocalDateTime updatedDate;
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 }

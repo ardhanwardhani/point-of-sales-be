@@ -2,7 +2,10 @@ package com.learn.point_of_sales_be.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,32 +17,49 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "product_sku")
-    private String productSku;
+    @Column(name = "sku")
+    private String sku;
 
-    @Column(name = "product_name", nullable = false)
-    private String productName;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @Column(name = "product_description")
-    private String productDescription;
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "product_price", nullable = false)
-    private String productPrice;
+    @Column(name = "price", nullable = false)
+    private String price;
+
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive;
+
+    @Column(name = "additional_info")
+    private String additionalInfo;
+
+    @CreatedDate
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "store_id", nullable = false)
+    private Store store;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    private ProductCategory productCategory;
 
-    @ManyToMany
-    @JoinTable(
-            name = "product_variant_option",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "variant_option_id")
-    )
-    private List<VariantOption> selectedVariants;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TransactionItem> transactionItems;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BranchProduct> branchProducts;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProcurementItem> procurementItems;
 }
